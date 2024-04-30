@@ -51,11 +51,17 @@ hide_streamlit_style = """
             """
 st.markdown(hide_streamlit_style, unsafe_allow_html=True)
 
+
+# Initialize session state variables
+if 'display_sidebar' not in st.session_state:
+    st.session_state['display_sidebar'] = False
+    st.session_state['details_index'] = -1
+
+# Main page setup
 st.title('⋅˚₊‧ ଳ⋆.ೃ࿔*:･+˚JELLY\'s MOVIE RECOMMENDER⋅˚₊‧ ଳ⋆.ೃ࿔*:･')
+selected_movie = st.selectbox('Select a Movie', movie_titles)
 
-selected_movie = st.selectbox('Type a Movie', options=titles)
-
-if st.button('Recommendations'):
+if st.button('Show Recommendations'):
     st.session_state['display_sidebar'] = False  # Reset sidebar when showing new recommendations
     num_movies = len(movie_titles)
     cols = st.columns(2 * num_movies)  # Create two columns for each movie

@@ -72,7 +72,7 @@ if st.button('Recommend'):
                     col_button = cols[j + 1]
                     if recommended_movie_posters[index]:
                         col_poster.image(recommended_movie_posters[index], use_column_width=True)
-                        if col_button.button("More Info", key=f"info_button_{index}"):  # Unique key for each button
+                        if col_button.expander("More Info", key=f"info_button_{index}"):  # Unique key for each button
                             st.sidebar.image(recommended_movie_posters[index], use_column_width=True)
                             st.sidebar.markdown(f"### {recommended_movie_names[index]}")
                             st.sidebar.write(f"Tags: {recommended_movie_tags[index]}")

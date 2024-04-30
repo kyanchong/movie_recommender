@@ -72,6 +72,6 @@ if st.button('Recommend'):
                         st.image(recommended_movie_posters[index], use_column_width=True)
                     with cols[j+1]:  # Second column for the expander
                         with st.expander("More Info"):
-                            st.markdown(f"**Title:** {recommended_movie_names[index]}")
-                            st.markdown(f"**Tags:** {recommended_movie_tags[index]}")
-                            st.image(recommended_movie_posters[index], use_column_width=True)
+                            st.sidebard.markdown(f"**Title:** {recommended_movie_names[index]}")
+                            st.sidebard.markdown(f"**Tags:** {recommended_movie_tags[index]}")
+                            st.sidebard.image(recommended_movie_posters[index], use_column_width=True)

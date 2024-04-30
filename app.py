@@ -59,11 +59,12 @@ if 'display_sidebar' not in st.session_state:
 
 # Main page setup
 st.title('⋅˚₊‧ ଳ⋆.ೃ࿔*:･+˚JELLY\'s MOVIE RECOMMENDER⋅˚₊‧ ଳ⋆.ೃ࿔*:･')
-selected_movie = st.selectbox('Select a Movie', movie_titles)
+selected_movie = st.selectbox('Type a Movie', options=titles)
 
-if st.button('Show Recommendations'):
+if st.button('Recommend'):
     st.session_state['display_sidebar'] = False  # Reset sidebar when showing new recommendations
-    num_movies = len(movie_titles)
+    recommended_movie_names, recommended_movie_posters, recommended_movie_tags = recommender(selected_movie)
+    num_movies = len(recommended_movie_names)    
     cols = st.columns(2 * num_movies)  # Create two columns for each movie
     for i in range(num_movies):
         with cols[2*i]:  # First column for the poster

@@ -7,7 +7,6 @@ import requests
 # Load the data
 df = pd.read_csv('data.csv')
 titles = df['title'].values
-links = df['links'].values
 tags = df['tags'].values
 cv = CountVectorizer(max_features=5000, stop_words='english')
 vectors = cv.fit_transform(tags).toarray()
@@ -40,7 +39,7 @@ def recommender(movie):
         movie_id = df.iloc[i[0]]['movie_id']
         recommended_titles.append(df.iloc[i[0]]['title'])
         recommended_posters.append(fetch_poster(movie_id))
-        recommended_links.append(df.iloc[i[0]]['link'])
+        recommended_links.append(df.iloc[i[0]]['links'])
         recommended_tags.append(df.iloc[i[0]]['tags'])
     return recommended_titles, recommended_posters, recommended_tags
 

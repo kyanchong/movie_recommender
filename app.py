@@ -55,6 +55,10 @@ st.title('⋅˚₊‧ ଳ⋆.ೃ࿔*:･+˚JELLY\'s MOVIE RECOMMENDER⋅˚₊‧
 
 selected_movie = st.selectbox('Type a Movie', options=titles)
 
+# Initialize session state
+if 'last_clicked' not in st.session_state:
+    st.session_state.last_clicked = None
+
 # Display recommended movies and posters with additional information
 if st.button('Recommend'):
     recommended_movie_names, recommended_movie_posters, recommended_movie_tags = recommender(selected_movie)
@@ -71,7 +75,17 @@ if st.button('Recommend'):
                         st.markdown(f"#### {recommended_movie_names[index]}")
                         st.image(recommended_movie_posters[index], use_column_width=True)
                     with cols[j+1]:  # Second column for the expander
-                        with st.expander("More Info"):
-                            st.sidebar.markdown(f"**Title:** {recommended_movie_names[index]}")
-                            st.sidebar.markdown(f"**Tags:** {recommended_movie_tags[index]}")
-                            st.sidebar.image(recommended_movie_posters[index], use_column_width=True)
+                        expander = st.expander("More Info")
+                        if expander:
+                            # Toggle details in the sidebar
+                            if st.session_state.last_clicked != index:
+                                st.session_state.last_clicked = index
+                                with st.sidebar:
+                                    st.markdown(f"**Title:** {recommended_movie_names[index]}")
+                                    st.markdown(f"**Tags:** {recommended_movie_tags[index]}")
+                                    st.image(recommended_movie_posters[index], use_column_width=True)
+                            else:
+                                # Clear the sidebar if the same button is clicked again
+                                st.session_state.last_clicked = None
+                                for key in st.sidebar.session_state.keys():
+                                    del st.sidebar.session_state[key]

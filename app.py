@@ -63,13 +63,14 @@ if st.button('Recommend'):
 
     for i in range(0, num_movies, cols_per_row):
         with st.container():
-            cols = st.columns(cols_per_row)  # One column for each movie
-            for j in range(cols_per_row):
-                index = i + j
+            cols = st.columns([1, 1] * cols_per_row)  # Create two columns for each movie, repeated for each movie in the row
+            for j in range(0, cols_per_row * 2, 2):  # Increment by 2 to process pairs of columns
+                index = i + (j // 2)
                 if index < num_movies:
-                    with cols[j]:
+                    with cols[j]:  # First column for the poster
                         st.markdown(f"#### {recommended_movie_names[index]}")
                         st.image(recommended_movie_posters[index], use_column_width=True)
+                    with cols[j+1]:  # Second column for the expander
                         with st.expander("More Info"):
                             st.markdown(f"**Title:** {recommended_movie_names[index]}")
                             st.markdown(f"**Tags:** {recommended_movie_tags[index]}")

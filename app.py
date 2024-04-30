@@ -7,6 +7,7 @@ import requests
 # Load the data
 df = pd.read_csv('data.csv')
 titles = df['title'].values
+links = df['link'].values
 tags = df['tags'].values
 cv = CountVectorizer(max_features=5000, stop_words='english')
 vectors = cv.fit_transform(tags).toarray()
@@ -33,11 +34,13 @@ def recommender(movie):
     movies_list = sorted(list(enumerate(distance)), reverse=True, key=lambda x: x[1])[1:11]
     recommended_titles = []
     recommended_posters = []
+    recommended_links = []
     recommended_tags = []
     for i in movies_list:
         movie_id = df.iloc[i[0]]['movie_id']
         recommended_titles.append(df.iloc[i[0]]['title'])
         recommended_posters.append(fetch_poster(movie_id))
+        recommended_links.append(df.iloc[i[0]]['link'])
         recommended_tags.append(df.iloc[i[0]]['tags'])
     return recommended_titles, recommended_posters, recommended_tags
 
@@ -57,7 +60,7 @@ selected_movie = st.selectbox('Type a Movie', options=titles)
 
 # Display recommended movies and posters when the button is clicked
 if st.button('Recommend'):
-    recommended_movie_names, recommended_movie_posters, recommended_movie_tags = recommender(selected_movie)
+    recommended_movie_names, recommended_movie_posters, recommended_movie_links, recommended_movie_tags = recommender(selected_movie)
 
     num_movies = len(recommended_movie_names)
     cols_per_row = 5  # 5 columns per row
@@ -76,4 +79,5 @@ if st.button('Recommend'):
                         # Create an expander to show additional information when clicked
                         with col.expander(f"More Info"):
                             st.markdown(f"### {recommended_movie_names[index]}")
+                            st.markdown(f"### {recommended_movie_links[index]}")
                             st.write(f"{recommended_movie_tags[index]}")

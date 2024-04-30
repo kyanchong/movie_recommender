@@ -55,7 +55,6 @@ st.title('⋅˚₊‧ ଳ⋆.ೃ࿔*:･+˚JELLY\'s MOVIE RECOMMENDER⋅˚₊‧
 
 selected_movie = st.selectbox('Type a Movie', options=titles)
 
-# Display recommended movies and posters with additional information
 if st.button('Recommend'):
     recommended_movie_names, recommended_movie_posters, recommended_movie_tags = recommender(selected_movie)
 
@@ -72,7 +71,9 @@ if st.button('Recommend'):
                     col_button = cols[j + 1]
                     if recommended_movie_posters[index]:
                         col_poster.image(recommended_movie_posters[index], use_column_width=True)
-                        if col_button.button("More Info", key=f"info_button_{index}"):  # Unique key for each button
-                            st.sidebar.image(recommended_movie_posters[index], use_column_width=True)
-                            st.sidebar.markdown(f"### {recommended_movie_names[index]}")
-                            st.sidebar.write(f"Tags: {recommended_movie_tags[index]}")
+                        button_clicked = col_button.button("More Info", key=f"info_button_{index}")  # Unique key for each button
+                        if button_clicked:  # Check if this specific button was clicked
+                            with st.sidebar:
+                                st.image(recommended_movie_posters[index], use_column_width=True)
+                                st.markdown(f"### {recommended_movie_names[index]}")
+                                st.write(f"Tags: {recommended_movie_tags[index]}")

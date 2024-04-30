@@ -55,25 +55,34 @@ st.title('⋅˚₊‧ ଳ⋆.ೃ࿔*:･+˚JELLY\'s MOVIE RECOMMENDER⋅˚₊‧
 
 selected_movie = st.selectbox('Type a Movie', options=titles)
 
+# Initialize or update session state
+if 'show_details' not in st.session_state:
+    st.session_state['show_details'] = False
+    st.session_state['details_index'] = None
+
+# Display recommended movies and posters with additional information
 if st.button('Recommend'):
     recommended_movie_names, recommended_movie_posters, recommended_movie_tags = recommender(selected_movie)
-
     num_movies = len(recommended_movie_names)
-    cols_per_row = 5  # Adjust number of columns per row based on your layout preference
+    cols_per_row = 5
 
     for i in range(0, num_movies, cols_per_row):
         with st.container():
-            cols = st.columns(cols_per_row * 2)  # Multiply by 2 for additional column for each movie
-            for j in range(0, cols_per_row * 2, 2):  # Step by 2 to handle poster and button separately
+            cols = st.columns(cols_per_row * 2)  # Each movie has two columns
+            for j in range(0, cols_per_row * 2, 2):
                 index = i + (j // 2)
                 if index < num_movies:
                     col_poster = cols[j]
                     col_button = cols[j + 1]
-                    if recommended_movie_posters[index]:
-                        col_poster.image(recommended_movie_posters[index], use_column_width=True)
-                        button_clicked = col_button.button("More Info", key=f"info_button_{index}")  # Unique key for each button
-                        if button_clicked:  # Check if this specific button was clicked
-                            with st.sidebar:
-                                st.image(recommended_movie_posters[index], use_column_width=True)
-                                st.markdown(f"### {recommended_movie_names[index]}")
-                                st.write(f"Tags: {recommended_movie_tags[index]}")
+                    col_poster.image(recommended_movie_posters[index], use_column_width=True)
+                    if col_button.button("More Info", key=f"info_button_{index}"):
+                        st.session_state['show_details'] = True
+                        st.session_state['details_index'] = index
+
+# Check session state to display sidebar details
+if st.session_state['show_details']:
+    index = st.session_state['details_index']
+    with st.sidebar:
+        st.image(recommended_movie_posters[index], use_column_width=True)
+        st.markdown(f"### {recommended_movie_names[index]}")
+        st.write(f"Tags: {recommended_movie_tags[index]}")

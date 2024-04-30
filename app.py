@@ -76,7 +76,7 @@ if st.button('Recommend'):
                         st.markdown(f"#### {recommended_movie_names[index]}")
                         st.image(recommended_movie_posters[index], use_column_width=True)
                     with cols[j+1]:  # Second column for the button
-                        button_clicked = st.button("More Info", key=f"button_{index}")
+                        button_clicked = st.button('More', key=f"button_{index}")
                         # Toggle sidebar display on button click
                         if button_clicked:
                             if st.session_state.display_sidebar and st.session_state.details_index == index:

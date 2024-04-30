@@ -75,5 +75,5 @@ if st.button('Recommend'):
                         col.text(recommended_movie_names[index])
                         # Create an expander to show additional information when clicked
                         with col.expander(f"More Info"):
-                            st.markdown.sidebar(f"### {recommended_movie_names[index]}")
-                            st.write.sidebar(f"{recommended_movie_tags[index]}")
+                            st.markdown(f"### {recommended_movie_names[index]}")
+                            st.write(f"{recommended_movie_tags[index]}")

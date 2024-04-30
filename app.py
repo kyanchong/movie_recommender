@@ -51,7 +51,7 @@ hide_streamlit_style = """
             """
 st.markdown(hide_streamlit_style, unsafe_allow_html=True)
 
-st.title('JELLY\'s MOVIE RECOMMENDER')
+st.title('⋅˚₊‧ ଳ⋆.ೃ࿔*:･+˚JELLY\'s MOVIE RECOMMENDER⋅˚₊‧ ଳ⋆.ೃ࿔*:･')
 
 selected_movie = st.selectbox('Type a Movie', options=titles)
 
@@ -72,6 +72,7 @@ if st.button('Recommend'):
                     col_button = cols[j + 1]
                     if recommended_movie_posters[index]:
                         col_poster.image(recommended_movie_posters[index], use_column_width=True)
+                        col_poster.text(recommended_movie_names[index], use_column_width=True)
                         if col_button.button("More Info", key=f"info_button_{index}"):  # Unique key for each button
                             st.sidebar.image(recommended_movie_posters[index], use_column_width=True)
                             st.sidebar.markdown(f"### {recommended_movie_names[index]}")

@@ -58,17 +58,19 @@ selected_movie = st.selectbox('Type a Movie', options=titles)
 # Display recommended movies and posters with additional information
 if st.button('Recommend'):
     recommended_movie_names, recommended_movie_posters, recommended_movie_tags = recommender(selected_movie)
-
     num_movies = len(recommended_movie_names)
     cols_per_row = 5  # Adjust number of columns per row based on your layout preference
 
     for i in range(0, num_movies, cols_per_row):
         with st.container():
-            cols = st.columns(cols_per_row)  # Adjust for one column per movie (poster and expander together)
-            for index in range(num_movies):
-                with cols[index % cols_per_row]:
-                    st.image(recommended_movie_posters[index], use_column_width=True)
-                    with st.expander("More Info"):
+            cols = st.columns(cols_per_row)  # One column for each movie
+            for j in range(cols_per_row):
+                index = i + j
+                if index < num_movies:
+                    with cols[j]:
+                        st.markdown(f"#### {recommended_movie_names[index]}")
                         st.image(recommended_movie_posters[index], use_column_width=True)
-                        st.markdown(f"### {recommended_movie_names[index]}")
-                        st.write(f"Tags: {recommended_movie_tags[index]}")
+                        with st.expander("More Info"):
+                            st.markdown(f"**Title:** {recommended_movie_names[index]}")
+                            st.markdown(f"**Tags:** {recommended_movie_tags[index]}")
+                            st.image(recommended_movie_posters[index], use_column_width=True)

@@ -68,8 +68,8 @@ if st.button('Recommend'):
     cols = st.columns(2 * num_movies)  # Create two columns for each movie
     for i in range(num_movies):
         with cols[2*i]:  # First column for the poster
-            st.image(movie_posters[i], width=100)
-            st.write(movie_titles[i])
+            st.image(recommended_movie_posters[i], width=100)
+            st.write(recommended_movie_names[i])
         with cols[2*i+1]:  # Second column for the button
             if st.button("More Info", key=f"info_{i}"):
                 if st.session_state['display_sidebar'] and st.session_state['details_index'] == i:
@@ -85,6 +85,6 @@ if st.button('Recommend'):
 if st.session_state['display_sidebar'] and st.session_state['details_index'] != -1:
     index = st.session_state['details_index']
     with st.sidebar:
-        st.image(movie_posters[index], width=200)
-        st.write(f"Title: {movie_titles[index]}")
-        st.write(f"Tags: {movie_tags[index]}")
+        st.image(recommended_movie_posters[index], width=200)
+        st.write(f"Title: {recommended_movie_names[index]}")
+        st.write(f"Tags: {recommended_movie_tags[index]}")

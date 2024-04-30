@@ -41,7 +41,7 @@ def recommender(movie):
         recommended_posters.append(fetch_poster(movie_id))
         recommended_links.append(df.iloc[i[0]]['links'])
         recommended_tags.append(df.iloc[i[0]]['tags'])
-    return recommended_titles, recommended_posters, recommended_tags
+    return recommended_titles, recommended_posters, recommended_links, recommended_tags
 
 # Streamlit UI Configuration
 st.set_page_config(layout="wide")

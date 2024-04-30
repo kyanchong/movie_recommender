@@ -52,30 +52,17 @@ hide_streamlit_style = """
             """
 st.markdown(hide_streamlit_style, unsafe_allow_html=True)
 
-st.title('⋅˚₊‧ ଳ⋆.ೃ࿔*:･+˚JELLY\'s MOVIE RECOMMENDER⋅˚₊‧ ଳ⋆.ೃ࿔*:･')
+st.title('JELLY\'s MOVIE RECOMMENDER')
 
 selected_movie = st.selectbox('Type a Movie', options=titles)
 
-# Display recommended movies and posters when the button is clicked
 if st.button('Recommend'):
     recommended_movie_names, recommended_movie_posters, recommended_movie_tags = recommender(selected_movie)
-
-    num_movies = len(recommended_movie_names)
-    cols_per_row = 5  # 5 columns per row
-
-    for i in range(0, num_movies, cols_per_row):
+    
+    for name, poster, tags in zip(recommended_movie_names, recommended_movie_posters, recommended_movie_tags):
         with st.container():
-            cols = st.columns(cols_per_row)
-            for j in range(cols_per_row):
-                index = i + j
-                if index < num_movies:
-                    col = cols[j]
-                    if recommended_movie_posters[index]:
-                        # Image and text for each movie
-                        col.image(recommended_movie_posters[index], use_column_width=True)
-                        col.text(recommended_movie_names[index])
-                        # Create an expander to show additional information when clicked
-                        with col.expander(f"More Info"):
-                            st.image(recommended_movie_posters[index], use_column_width=True)
-                            st.markdown(f"### {recommended_movie_names[index]}")
-                            st.write(f"{recommended_movie_tags[index]}")
+            col1, col2 = st.columns([1, 2])
+            col1.image(poster, use_column_width=True)
+            with col2:
+                st.markdown(f"### {name}")
+                st.write(tags)

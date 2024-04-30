@@ -7,7 +7,7 @@ import requests
 # Load the data
 df = pd.read_csv('data.csv')
 titles = df['title'].values
-links = df['link'].values
+links = df['links'].values
 tags = df['tags'].values
 cv = CountVectorizer(max_features=5000, stop_words='english')
 vectors = cv.fit_transform(tags).toarray()

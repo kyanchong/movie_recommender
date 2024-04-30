@@ -55,39 +55,29 @@ st.title('⋅˚₊‧ ଳ⋆.ೃ࿔*:･+˚JELLY\'s MOVIE RECOMMENDER⋅˚₊‧
 
 selected_movie = st.selectbox('Type a Movie', options=titles)
 
-# Initialize session state variables
-if 'display_sidebar' not in st.session_state:
-    st.session_state.display_sidebar = False
-    st.session_state.details_index = -1
-
-# Display recommended movies and posters with additional information
-if st.button('Recommend'):
-    recommended_movie_names, recommended_movie_posters, recommended_movie_tags = recommender(selected_movie)
-    num_movies = len(recommended_movie_names)
-    cols_per_row = 3  # Adjust number of columns per row based on your layout preference
-
-    for i in range(0, num_movies, cols_per_row):
-        with st.container():
-            cols = st.columns([1, 1] * cols_per_row)  # Create two columns for each movie, repeated for each movie in the row
-            for j in range(0, cols_per_row * 2, 2):  # Increment by 2 to process pairs of columns
-                index = i + (j // 2)
-                if index < num_movies:
-                    with cols[j]:  # First column for the poster
-                        st.markdown(f"#### {recommended_movie_names[index]}")
-                        st.image(recommended_movie_posters[index], use_column_width=True)
-                    with cols[j+1]:  # Second column for the button
-                        button_clicked = st.button('More', key=f"button_{index}")
-                        # Toggle sidebar display on button click
-                        if button_clicked:
-                            if st.session_state.display_sidebar and st.session_state.details_index == index:
-                                st.session_state.display_sidebar = False
-                                st.session_state.details_index = -1
-                            else:
-                                st.session_state.display_sidebar = True
-                                st.session_state.details_index = index
+if st.button('Recommendations'):
+    st.session_state['display_sidebar'] = False  # Reset sidebar when showing new recommendations
+    num_movies = len(movie_titles)
+    cols = st.columns(2 * num_movies)  # Create two columns for each movie
+    for i in range(num_movies):
+        with cols[2*i]:  # First column for the poster
+            st.image(movie_posters[i], width=100)
+            st.write(movie_titles[i])
+        with cols[2*i+1]:  # Second column for the button
+            if st.button("More Info", key=f"info_{i}"):
+                if st.session_state['display_sidebar'] and st.session_state['details_index'] == i:
+                    # If sidebar is already displaying this movie's info, hide it
+                    st.session_state['display_sidebar'] = False
+                    st.session_state['details_index'] = -1
+                else:
+                    # Otherwise, show the correct movie's info in the sidebar
+                    st.session_state['display_sidebar'] = True
+                    st.session_state['details_index'] = i
 
 # Manage sidebar content based on state
-if st.session_state.display_sidebar and st.session_state.details_index != -1:
-    index = st.session_state.details_index
+if st.session_state['display_sidebar'] and st.session_state['details_index'] != -1:
+    index = st.session_state['details_index']
     with st.sidebar:
-        st.image
+        st.image(movie_posters[index], width=200)
+        st.write(f"Title: {movie_titles[index]}")
+        st.write(f"Tags: {movie_tags[index]}")

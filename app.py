@@ -59,7 +59,7 @@ selected_movie = st.selectbox('Type a Movie', options=titles)
 if st.button('Recommend'):
     recommended_movie_names, recommended_movie_posters, recommended_movie_tags = recommender(selected_movie)
     num_movies = len(recommended_movie_names)
-    cols_per_row = 5  # Adjust number of columns per row based on your layout preference
+    cols_per_row = 3  # Adjust number of columns per row based on your layout preference
 
     for i in range(0, num_movies, cols_per_row):
         with st.container():

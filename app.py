@@ -55,9 +55,10 @@ st.title('⋅˚₊‧ ଳ⋆.ೃ࿔*:･+˚JELLY\'s MOVIE RECOMMENDER⋅˚₊‧
 
 selected_movie = st.selectbox('Type a Movie', options=titles)
 
-# Initialize session state
-if 'last_clicked' not in st.session_state:
-    st.session_state.last_clicked = None
+# Initialize session state variables
+if 'display_sidebar' not in st.session_state:
+    st.session_state.display_sidebar = False
+    st.session_state.details_index = -1
 
 # Display recommended movies and posters with additional information
 if st.button('Recommend'):
@@ -74,18 +75,19 @@ if st.button('Recommend'):
                     with cols[j]:  # First column for the poster
                         st.markdown(f"#### {recommended_movie_names[index]}")
                         st.image(recommended_movie_posters[index], use_column_width=True)
-                    with cols[j+1]:  # Second column for the expander
-                        expander = st.expander("More Info")
-                        if expander:
-                            # Toggle details in the sidebar
-                            if st.session_state.last_clicked != index:
-                                st.session_state.last_clicked = index
-                                with st.sidebar:
-                                    st.markdown(f"**Title:** {recommended_movie_names[index]}")
-                                    st.markdown(f"**Tags:** {recommended_movie_tags[index]}")
-                                    st.image(recommended_movie_posters[index], use_column_width=True)
+                    with cols[j+1]:  # Second column for the button
+                        button_clicked = st.button("More Info", key=f"button_{index}")
+                        # Toggle sidebar display on button click
+                        if button_clicked:
+                            if st.session_state.display_sidebar and st.session_state.details_index == index:
+                                st.session_state.display_sidebar = False
+                                st.session_state.details_index = -1
                             else:
-                                # Clear the sidebar if the same button is clicked again
-                                st.session_state.last_clicked = None
-                                for key in st.sidebar.session_state.keys():
-                                    del st.sidebar.session_state[key]
+                                st.session_state.display_sidebar = True
+                                st.session_state.details_index = index
+
+# Manage sidebar content based on state
+if st.session_state.display_sidebar and st.session_state.details_index != -1:
+    index = st.session_state.details_index
+    with st.sidebar:
+        st.image

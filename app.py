@@ -64,15 +64,11 @@ if st.button('Recommend'):
 
     for i in range(0, num_movies, cols_per_row):
         with st.container():
-            cols = st.columns(cols_per_row * 2)  # Multiply by 2 for additional column for each movie
-            for j in range(0, cols_per_row * 2, 2):  # Step by 2 to handle poster and button separately
-                index = i + (j // 2)
-                if index < num_movies:
-                    col_poster = cols[j]
-                    col_button = cols[j + 1]
-                    if recommended_movie_posters[index]:
-                        col_poster.image(recommended_movie_posters[index], use_column_width=True)
-                        if col_button.expander(f"More Info"):  # Unique key for each button
-                            st.sidebar.image(recommended_movie_posters[index], use_column_width=True)
-                            st.sidebar.markdown(f"### {recommended_movie_names[index]}")
-                            st.sidebar.write(f"Tags: {recommended_movie_tags[index]}")
+            cols = st.columns(cols_per_row)  # Adjust for one column per movie (poster and expander together)
+            for index in range(num_movies):
+                with cols[index % cols_per_row]:
+                    st.image(recommended_movie_posters[index], use_column_width=True)
+                    with st.expander("More Info"):
+                        st.image(recommended_movie_posters[index], use_column_width=True)
+                        st.markdown(f"### {recommended_movie_names[index]}")
+                        st.write(f"Tags: {recommended_movie_tags[index]}")

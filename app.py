@@ -52,17 +52,22 @@ hide_streamlit_style = """
             """
 st.markdown(hide_streamlit_style, unsafe_allow_html=True)
 
-st.title('JELLY\'s MOVIE RECOMMENDER')
+st.title('⋅˚₊‧ ଳ⋆.ೃ࿔*:･+˚JELLY\'s MOVIE RECOMMENDER⋅˚₊‧ ଳ⋆.ೃ࿔*:･')
 
 selected_movie = st.selectbox('Type a Movie', options=titles)
 
 if st.button('Recommend'):
     recommended_movie_names, recommended_movie_posters, recommended_movie_tags = recommender(selected_movie)
-    
-    for name, poster, tags in zip(recommended_movie_names, recommended_movie_posters, recommended_movie_tags):
+    num_movies = len(recommended_movie_names)
+    cols_per_row = 5  # 5 columns per row
+
+    for i in range(0, num_movies, cols_per_row):
         with st.container():
-            col1, col2 = st.columns([1, 2])
-            col1.image(poster, use_column_width=True)
-            with col2:
-                st.markdown(f"### {name}")
-                st.write(tags)
+            cols = st.columns(cols_per_row * 2)  # Double the columns to place the button next to the poster
+            for j in range(cols_per_row):
+                index = i + j
+                if index < num_movies:
+                    col1, col2 = cols[2*j], cols[2*j+1]  # Create two columns per movie
+                    if recommended_movie_posters[index]:
+                        col1.image(recommended_movie_posters[index], use_column_width=True)
+                        col2.button(f"More Info on {recommended_movie_names[index]}")  # Place button in the second column

@@ -11,19 +11,23 @@ tags = df['tags'].values
 links = df['link'].values  # Assuming 'link' is a column in your CSV
 
 # Count Vectorizer for processing tags into feature vectors
-cv_tags = CountVectorizer(max_features=5000, stop_words='english')
-tag_vectors = cv_tags.fit_transform(tags).toarray()
-similarity_tags = cosine_similarity(tag_vectors)
+cv = CountVectorizer(max_features=5000, stop_words='english')
+vectors = cv.fit_transform(tags).toarray()
+similarity = cosine_similarity(vectors)
 
 # API key for TMDB
 API_KEY_AUTH = "b8c96e534866701532768a313b978c8b"
 
 # Function to fetch movie posters from TMDB
 def fetch_poster(movie_id):
-    response = requests.get(f'https://api.themoviedb.org/3/movie/{movie_id}?api_key={API_KEY_AUTH}')
+    response = requests.get(
+        f'https://api.themoviedb.org/3/movie/{movie_id}?api_key={API_KEY_AUTH}'
+    )
     data = response.json()
     poster_path = data.get('poster_path', '')
-    return f'https://image.tmdb.org/t/p/w500/{poster_path}' if poster_path else ''
+    if not poster_path:
+        return ''
+    return f'https://image.tmdb.org/t/p/w500/{poster_path}'
 
 def recommender(movie):
     movie_index = df[df['title'].str.lower() == movie.lower()].index[0]  # Case insensitive search
@@ -47,6 +51,19 @@ def recommender(movie):
         recommended_links.append(df.iloc[idx]['link'])  # Retrieve link for each movie
 
     return recommended_titles, recommended_posters, recommended_tags, recommended_links
+
+# Streamlit UI Configuration
+st.set_page_config(layout="wide")
+hide_streamlit_style = """
+            <style>
+            #MainMenu {visibility: hidden;}
+            footer {visibility: hidden;}
+            </style>
+            """
+st.markdown(hide_streamlit_style, unsafe_allow_html=True)
+
+st.title('⋅˚₊‧ ଳ⋆.ೃ࿔*:･+˚JELLY\'s MOVIE RECOMMENDER⋅˚₊‧ ଳ⋆.ೃ࿔*:･')
+selected_movie = st.selectbox('Type a Movie', options=titles)
 
 # Streamlit button to show recommendations
 if st.button('Recommend'):

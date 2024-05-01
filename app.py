@@ -37,7 +37,7 @@ def recommender(movie):
     distances_titles = similarity_titles[movie_index]
     combined_distances = (distances_tags + distances_titles) / 2  # Combine both similarities
     
-    movies_list = sorted(list(enumerate(combined_distances)), reverse=True, key=lambda x: x[1])[1:11]
+    movies_list = sorted(list(enumerate(combined_distances)), reverse=True, key=lambda x: x[1])[1:21]
     recommendations = [(df.iloc[i[0]]['title'], fetch_poster(df.iloc[i[0]]['movie_id']), df.iloc[i[0]]['tags'], df.iloc[i[0]]['link']) for i in movies_list]
     return recommendations
 

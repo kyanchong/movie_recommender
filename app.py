@@ -1,6 +1,6 @@
 import pandas as pd
 import streamlit as st
-from sklearn.feature_extraction.text import CountVectorizer
+from sklearn.feature_extraction.text import CountVectorizer, TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
 import requests
 

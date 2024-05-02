@@ -8,7 +8,7 @@ import requests
 df = pd.read_csv('data.csv')
 titles = df['title'].values
 tags = df['tags'].values
-links = df['link'].values  # Assuming 'link' is a column in your CSV
+links = df['link'].values
 
 # Count Vectorizer for processing tags into feature vectors
 cv = CountVectorizer(max_features=5000, stop_words='english')
@@ -89,5 +89,5 @@ if st.button('Recommend'):
                         # Create an expander to show additional information when clicked
                         with col.expander(f"More Info"):
                             st.markdown(f"### {recommended_movie_names[index]}")
-                            st.markdown(f"[More Details]({recommended_links[index]})")
+                            st.markdown(f"[View Trailer]({recommended_links[index]})")
                             st.write(f"Overview: {recommended_movie_tags[index]}")

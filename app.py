@@ -43,7 +43,7 @@ def recommender(movie):
     recommended_tags = []
     recommended_links = []
     
-    for i in movies_list[1:11]:  # Skip the first one since it will be the searched movie itself
+    for i in movies_list[1:10]:  # Skip the first one since it will be the searched movie itself
         idx = i[0]
         recommended_titles.append(df.iloc[idx]['title'])
         recommended_posters.append(fetch_poster(df.iloc[idx]['movie_id']))
